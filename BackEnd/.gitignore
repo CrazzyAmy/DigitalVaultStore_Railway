@@ -1,0 +1,68 @@
+# ── 敏感設定檔 ────────────────────────────────────────────
+appsettings.Development.json
+appsettings.Production.json
+appsettings.Local.json
+
+# ── .NET 建置輸出 ─────────────────────────────────────────
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+# ── Visual Studio ─────────────────────────────────────────
+.vs/
+*.rsuser
+*.MojoProc
+*.VC.db
+*.VC.VC.opendb
+*.pidb
+*.svclog
+*.scc
+
+# ── NuGet ─────────────────────────────────────────────────
+*.nupkg
+*.snupkg
+**/[Pp]ackages/*
+!**/[Pp]ackages/build/
+*.nuget.props
+*.nuget.targets
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# ── 前端 Node.js ──────────────────────────────────────────
+node_modules/
+dist/
+.pnp
+.pnp.js
+
+# ── 前端環境變數 ──────────────────────────────────────────
+.env
+.env.local
+.env.development
+.env.production
+.env.*.local
+
+# ── 上傳檔案（大頭貼等）──────────────────────────────────
+**/wwwroot/uploads/
+
+# ── 系統檔案 ──────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── IDE ───────────────────────────────────────────────────
+.idea/
+*.swp
+*.swo

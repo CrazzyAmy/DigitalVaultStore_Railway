@@ -1,0 +1,22 @@
+# .NET
+bin/
+obj/
+*.user
+
+# Node / 前端
+node_modules/
+dist/
+.vite/
+
+# 機密設定(重要!)
+.env
+.env.prod
+appsettings.Development.json
+appsettings.Production.json
+
+# Docker 相關的環境檔
+*.env
+
+# 作業系統
+.DS_Store
+Thumbs.db

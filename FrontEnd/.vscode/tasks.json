@@ -1,0 +1,17 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "npm",
+			"script": "preview",
+			"path": "digital-vault",
+			"problemMatcher": [],
+			"label": "npm: preview - digital-vault",
+			"detail": "vite preview",
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			}
+		}
+	]
+}

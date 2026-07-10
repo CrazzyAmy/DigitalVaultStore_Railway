@@ -1,0 +1,59 @@
+# DigitalVaultStore 開發環境 - 前端 + 後端 + Redis
+# 用法:在專案根目錄執行 docker compose up
+#
+# 架構:
+#   frontend (Vite)  ─► backend (ASP.NET Core) ─┬─► SQL Server (Windows 主機, 不在 compose 內)
+#                                                └─► redis (快取, 此 compose 內)
+
+services:
+  # ---------- 後端:ASP.NET Core ----------
+  backend:
+    build:
+      context: ./BackEnd/DigitalProject      # 你的 .csproj 和 Dockerfile 所在資料夾
+      dockerfile: Dockerfile
+    container_name: backend-dev
+    ports:
+      - "8080:8080"
+    environment:
+      # 用環境變數覆蓋 appsettings.json 的設定,不必每次改檔重 build
+      # __ (雙底線) 是 .NET 設定的分層語法,對應 ConnectionStrings:DefaultConnection
+      - ConnectionStrings__DefaultConnection=Server=192.168.112.1,1434;Database=DigitalVaultStore;User Id=Bruce;Password=M13579kk!!;TrustServerCertificate=True;
+      # Redis 指向下面的 redis 服務(用服務名稱當主機名,不是 localhost)
+      - Redis__ConnectionString=redis:6379
+      - ASPNETCORE_ENVIRONMENT=Development
+    depends_on:
+      - redis
+    networks:
+      - vault-net
+    # 讓後端能連到 Windows 主機(SQL Server 在那);多數情況不需要,但保險起見保留說明
+    # extra_hosts:
+    #   - "windows-host:192.168.112.1"
+
+  # ---------- 前端:Vite dev server ----------
+  frontend:
+    image: node:20
+    container_name: frontend-dev
+    working_dir: /app
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./FrontEnd/digital-vault:/app        # 掛載前端原始碼
+      - /app/node_modules                     # 匿名 volume,隔離容器內外的 node_modules
+    command: sh -c "npm install && npm run dev -- --host 0.0.0.0"
+    depends_on:
+      - backend
+    networks:
+      - vault-net
+
+  # ---------- Redis 快取 ----------
+  redis:
+    image: redis:7-alpine
+    container_name: redis-dev
+    ports:
+      - "6379:6379"                           # 對外映射,方便你本機用工具連進去看
+    networks:
+      - vault-net
+
+networks:
+  vault-net:
+    driver: bridge
