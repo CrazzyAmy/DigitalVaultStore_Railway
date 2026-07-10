@@ -1,4 +1,4 @@
-const BACKEND_URL = "https://localhost:7124";
+const BACKEND_URL = (import.meta.env.VITE_API_URL || "https://localhost:7124").replace(/\/api$/, "");
 
 export const getAvatarUrl = (avatarUrl) => {
   if (!avatarUrl) return null;
