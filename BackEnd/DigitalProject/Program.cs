@@ -223,13 +223,6 @@ builder.Services.AddSwaggerGen(c =>
 // ── Build ─────────────────────────────────────────────────────────────────────
 var app = builder.Build();
 
-// ── 啟動時自動套用 EF Core Migration(建立資料表)──
-using (var scope = app.Services.CreateScope())
-{
-    var db = scope.ServiceProvider.GetRequiredService<DigitalVaultStoreDbContext>();
-    db.Database.Migrate();
-}
-
 // 讓 App 知道自己在 HTTPS 反向代理(Railway)後面
 app.UseForwardedHeaders(new ForwardedHeadersOptions
 {
@@ -239,6 +232,15 @@ app.UseForwardedHeaders(new ForwardedHeadersOptions
     KnownNetworks = { },
     KnownProxies = { }
 });
+
+
+// ── 啟動時自動套用 EF Core Migration(建立資料表)──
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<DigitalVaultStoreDbContext>();
+    db.Database.Migrate();
+}
+
 
 // GlobalExceptionMiddleware 最外層，捕捉所有未處理例外
 app.UseMiddleware<GlobalExceptionMiddleware>();
