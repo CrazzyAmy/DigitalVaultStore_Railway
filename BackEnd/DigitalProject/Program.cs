@@ -230,6 +230,16 @@ using (var scope = app.Services.CreateScope())
     db.Database.Migrate();
 }
 
+// 讓 App 知道自己在 HTTPS 反向代理(Railway)後面
+app.UseForwardedHeaders(new ForwardedHeadersOptions
+{
+    ForwardedHeaders = Microsoft.AspNetCore.HttpOverrides.ForwardedHeaders.XForwardedFor 
+                     | Microsoft.AspNetCore.HttpOverrides.ForwardedHeaders.XForwardedProto,
+    // Railway 的代理,清空這兩個限制才會生效
+    KnownNetworks = { },
+    KnownProxies = { }
+});
+
 // GlobalExceptionMiddleware 最外層，捕捉所有未處理例外
 app.UseMiddleware<GlobalExceptionMiddleware>();
 
