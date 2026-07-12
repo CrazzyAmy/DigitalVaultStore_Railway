@@ -238,7 +238,9 @@ app.UseForwardedHeaders(new ForwardedHeadersOptions
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<DigitalVaultStoreDbContext>();
-    db.Database.Migrate();
+    // InMemory（整合測試）不是關聯式資料庫，Migrate 會擲例外，須跳過
+    if (db.Database.IsRelational())
+        db.Database.Migrate();
 }
 
 
